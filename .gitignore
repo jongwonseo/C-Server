@@ -243,3 +243,17 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+
+##folders
+**/Debug/
+**/Release/
+**/x64/
+**/x32/
+
+##files
+*.sin
+**/*.vcxproj
+**/*.vcxproj.*
+**/*.i
+**/*.obj
