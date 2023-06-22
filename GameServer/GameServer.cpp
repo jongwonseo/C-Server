@@ -5,9 +5,6 @@
 #include <atomic>
 #include <mutex>
 
-int32 sum = 0;
-lock_guard<mutex> m;
-SpinLock spinLock;
 
 class SpinLock
 {
@@ -31,9 +28,14 @@ public:
 		//	return false;
 		//}
 
+
+		// true여야 lock흭득
 		while (_locked.compare_exchange_strong(expected, desired) == false)
 		{
 			expected = false;
+			//this_thread::sleep_for(std::chrono::milliseconds(100));
+			this_thread::sleep_for(100ms); //오버로딩 되어있음
+			
 		}
 
 	}
@@ -47,40 +49,38 @@ private:
 };
 
 
-
-
-
-
-
-
+int32 sum = 0;
+lock_guard<mutex> m;
+SpinLock spinLock;
 
 //mutex m;
 
-//void Add()
-//{
-//	for (int32 i = 0; i < 100'000; i++)
-//	{
-//		lock_guard<mutex> guard(m);
-//		sum++;
-//	}
-//}
+void Add()
+{
+	for (int32 i = 0; i < 100'000; i++)
+	{
+		//lock_guard<mutex> guard(m);
+		spinLock.lock();
+		sum++;
+	}
+}
+
+void Sub()
+{
+	for (int32 i = 0; i < 100'000; i++)
+	{
+		lock_guard<SpinLock> guard(spinLock);
+		sum--;
+	}
+}
 //
-//void Sub()
-//{
-//	for (int32 i = 0; i < 100'000; i++)
-//	{
-//		lock_guard<mutex> guard(m);
-//		sum--;
-//	}
-//}
-//
-//int main()
-//{
-//	thread t1(Add);
-//	thread t2(Sub);
-//
-//	t1.join();
-//	t2.join();
-//
-//	cout << sum << endl;
-//}
+int main()
+{
+	thread t1(Add);
+	thread t2(Sub);
+
+	t1.join();
+	t2.join();
+
+	cout << sum << endl;
+}
