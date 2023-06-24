@@ -1,28 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Network">
-      <UniqueIdentifier>{0a12d96a-6299-408d-bbac-69166089e15c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{8a567698-42cc-40f4-b042-7a39ee094a8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{f07274af-deca-41b6-ba31-879bcd982e25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Thread">
-      <UniqueIdentifier>{d3ff5a28-6c71-4edb-80c8-6d9c2f5c5130}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Memory">
-<<<<<<< Updated upstream
-      <UniqueIdentifier>{b6fdb202-d19b-4d80-86c9-154507d617cb}</UniqueIdentifier>
-=======
-      <UniqueIdentifier>{095a7be4-7329-4bf2-aac9-8713347dce67}</UniqueIdentifier>
->>>>>>> Stashed changes
-    </Filter>
+    <ClCompile Include="ThreadManager.cpp" />
+    <ClCompile Include="CoreGlobal.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="CorePch.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreTLS.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Allocator.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="RefCounting.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ThreadManager.h" />
+    <ClInclude Include="CoreGlobal.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreMacro.h">
+      <Filter>Main</Filter>
+    </ClInclude>
     <ClInclude Include="CorePch.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTLS.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
@@ -31,54 +44,31 @@
     <ClInclude Include="Types.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="CoreMacro.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="Allocator.h">
+      <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="CoreGlobal.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="CoreTLS.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadManager.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-    <ClInclude Include="RefCounting.h">
-=======
     <ClInclude Include="Memory.h">
       <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Allocator.h">
->>>>>>> Stashed changes
+    <ClInclude Include="RefCounting.h">
       <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Container.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CorePch.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="CoreGlobal.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="CoreTLS.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadManager.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-    <ClCompile Include="RefCounting.cpp">
-=======
-    <ClCompile Include="Allocator.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Memory.cpp">
->>>>>>> Stashed changes
-      <Filter>Memory</Filter>
-    </ClCompile>
+    <Filter Include="Main">
+      <UniqueIdentifier>{2932ee2f-fc29-459f-adeb-a27b5d2279e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{7fd804dc-5041-41e3-a644-f9d435bfb879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{58163adf-841c-49ee-b3df-a137cf561ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{fd68ae55-e9b6-45df-acb1-66e238a205ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

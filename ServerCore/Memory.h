@@ -5,8 +5,12 @@
 template<typename Type, typename...Args>
 Type* xnew(Args&&...args)
 {
+	// 먼저 메모리 할당 받고 생성자 호출
+	// 
+	// 할당, CoreMecro에 있는 메크로에 의해서 xalloc이 변환됨
 	Type* memory = static_cast<Type*>(xalloc(sizeof(Type)));
-
+	
+	
 	//placement new
 	new(memory)Type(std::forward<Args>(args)...);
 	return memory;
@@ -16,5 +20,7 @@ template<typename Type>
 void xdelete(Type* obj)
 {
 	obj->~Type();
+
+	//CoreMecro에 있는 메크로에 의해서 xrelease가 변환됨
 	xrelease(obj);
 }
