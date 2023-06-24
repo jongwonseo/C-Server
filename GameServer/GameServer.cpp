@@ -3,74 +3,175 @@
 #include "CorePch.h"
 #include "CoreMacro.h"
 #include "ThreadManager.h"
+<<<<<<< Updated upstream
+#include "refCounting.h"
+=======
+#include "Memory.h"
+>>>>>>> Stashed changes
 
-// CoreGlobal Core;
+class Wraith;
+class Missile;
 
-class TestLock
+using WraithRef = TSharedPtr<Wraith>;
+using MissileRef = TSharedPtr<Missile>;
+
+class Wraith : public RefCountable
 {
-	USE_LOCK
-
 public:
-	int32 TestRead()
-	{
-		READ_LOCK
-
-		if (_queue.empty())
-			return - 1;
-		return _queue.front();
-	}
-
-	void TestPush()
-	{
-		WRITE_LOCK
-
-		_queue.push(rand() % 100);
-	}
-
-	void TestPop()
-	{
-		WRITE_LOCK
-
-		if (_queue.empty() == false)
-			_queue.pop();
-	}
-private:
-	queue<int32> _queue;
+	int _hp = 150;
+	int _posX = 0;
+	int _posY = 0;
 };
 
-TestLock testLock;
+using WraithRef = TSharedPtr<Wraith>;
 
-
-void ThreadWrite()
+class Missile : public RefCountable
 {
-	while(true)
+public:
+	void SetTarget(WraithRef target)
 	{
-		testLock.TestPush();
-		this_thread::sleep_for(1ms);
-		testLock.TestPop();
-	}
-}
+		_target = target;
+		// 중간에 개입 가능
+		//target->AddRef();
 
-void ThreadRead()
-{
-	while (true)
-	{
-		int32 value = testLock.TestRead();
-		cout << value << endl;
-		this_thread::sleep_for(1ms);
 	}
-}
+
+	bool Update()
+	{
+		if (_target == nullptr)
+			return true;
+
+		int posX = _target->_posX;
+		int posY = _target->_posY;
+
+		// TODO : 쫓아간다
+
+		if (_target->_hp == 0)
+		{
+			//_target->ReleaseRef();
+			_target = nullptr;
+			return true;
+		}
+
+		return false;
+	}
+
+<<<<<<< Updated upstream
+	WraithRef _target = nullptr;
+};
 
 int main()
 {
-	for (int32 i = 0; i < 5; i++)
+	WraithRef wraith(new Wraith());
+	wraith->ReleaseRef();
+	MissileRef missile(new Missile());
+	missile->ReleaseRef();
+
+	missile->SetTarget(wraith);
+
+	// 레이스가 피격 당함
+	wraith->_hp = 0;
+	//delete Wraith;
+	//Wraith->ReleaseRef();
+	wraith = nullptr;
+
+	while (true)
 	{
-		GThreadManager->Launch(ThreadWrite);
+		if (missile)
+		{
+			if (missile->Update())
+			{
+				//missile->ReleaseRef();
+				missile = nullptr;
+			}
+		}
 	}
 
-	for (int32 i = 0; i < 5; i++)
-	{
-		GThreadManager->Launch(ThreadRead);
+	//missile->ReleaseRef();
+	missile = nullptr;
+	//delete missile;
+=======
+class Knight 
+{
+public:
+	Knight() {
+		cout << "default" << endl;
 	}
-	GThreadManager->Join();
+	Knight(int32 i) 
+	{
+		cout << "int" << endl;
+	}
+
+	~Knight()
+	{
+		cout << "~knight" << endl;
+	}
+	/*
+	static void* operator new(size_t size)
+	{
+		cout << "Knight new " << size << endl;
+		void* ptr = ::malloc(size);
+		return ptr;
+	}
+
+	static void operator delete(void* ptr)
+	{
+		cout << "Knight delete " << endl;
+		::free(ptr);
+	}
+
+	static void* operator new[](size_t size)
+	{
+		cout << "Knight new[] " << size << endl;
+		void* ptr = ::malloc(size);
+		return ptr;
+	}
+
+	static 	void operator delete[](void* ptr)
+	{
+		cout << "Knight delete " << endl;
+		::free(ptr);
+	}
+	*/
+
+
+};
+
+//void* operator new(size_t size)
+//{
+//	cout << "new " << size << endl;
+//	void* ptr = ::malloc(size);
+//	return ptr;
+//}
+//
+//void operator delete(void* ptr)
+//{
+//	cout << "delete "<< endl;
+//	::free(ptr);
+//}
+//
+//void* operator new[](size_t size)
+//{
+//	cout << "new[] " << size << endl;
+//	void* ptr = ::malloc(size);
+//	return ptr;
+//}
+//
+//void operator delete[](void* ptr)
+//{
+//	cout << "delete " << endl;
+//	::free(ptr);
+//}
+//
+
+int main()
+{
+	Knight* kinght = xnew<Knight>();
+
+	xdelete<Knight>(kinght);
+
+	Knight* kinght2 = xnew<Knight>(10);
+
+	xdelete<Knight>(kinght2);
+>>>>>>> Stashed changes
 }

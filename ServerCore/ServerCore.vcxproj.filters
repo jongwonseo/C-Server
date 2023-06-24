@@ -13,6 +13,13 @@
     <Filter Include="Thread">
       <UniqueIdentifier>{d3ff5a28-6c71-4edb-80c8-6d9c2f5c5130}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Memory">
+<<<<<<< Updated upstream
+      <UniqueIdentifier>{b6fdb202-d19b-4d80-86c9-154507d617cb}</UniqueIdentifier>
+=======
+      <UniqueIdentifier>{095a7be4-7329-4bf2-aac9-8713347dce67}</UniqueIdentifier>
+>>>>>>> Stashed changes
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CorePch.h">
@@ -36,8 +43,15 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Thread</Filter>
     </ClInclude>
-    <ClInclude Include="Lock.h">
-      <Filter>Thread</Filter>
+<<<<<<< Updated upstream
+    <ClInclude Include="RefCounting.h">
+=======
+    <ClInclude Include="Memory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator.h">
+>>>>>>> Stashed changes
+      <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,8 +70,15 @@
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
-    <ClCompile Include="Lock.cpp">
-      <Filter>Thread</Filter>
+<<<<<<< Updated upstream
+    <ClCompile Include="RefCounting.cpp">
+=======
+    <ClCompile Include="Allocator.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+>>>>>>> Stashed changes
+      <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
