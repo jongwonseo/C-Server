@@ -3,7 +3,11 @@
 #include "CorePch.h"
 #include "CoreMacro.h"
 #include "ThreadManager.h"
+<<<<<<< Updated upstream
 #include "refCounting.h"
+=======
+#include "Memory.h"
+>>>>>>> Stashed changes
 
 class Wraith;
 class Missile;
@@ -52,6 +56,7 @@ public:
 		return false;
 	}
 
+<<<<<<< Updated upstream
 	WraithRef _target = nullptr;
 };
 
@@ -85,4 +90,88 @@ int main()
 	//missile->ReleaseRef();
 	missile = nullptr;
 	//delete missile;
+=======
+class Knight 
+{
+public:
+	Knight() {
+		cout << "default" << endl;
+	}
+	Knight(int32 i) 
+	{
+		cout << "int" << endl;
+	}
+
+	~Knight()
+	{
+		cout << "~knight" << endl;
+	}
+	/*
+	static void* operator new(size_t size)
+	{
+		cout << "Knight new " << size << endl;
+		void* ptr = ::malloc(size);
+		return ptr;
+	}
+
+	static void operator delete(void* ptr)
+	{
+		cout << "Knight delete " << endl;
+		::free(ptr);
+	}
+
+	static void* operator new[](size_t size)
+	{
+		cout << "Knight new[] " << size << endl;
+		void* ptr = ::malloc(size);
+		return ptr;
+	}
+
+	static 	void operator delete[](void* ptr)
+	{
+		cout << "Knight delete " << endl;
+		::free(ptr);
+	}
+	*/
+
+
+};
+
+//void* operator new(size_t size)
+//{
+//	cout << "new " << size << endl;
+//	void* ptr = ::malloc(size);
+//	return ptr;
+//}
+//
+//void operator delete(void* ptr)
+//{
+//	cout << "delete "<< endl;
+//	::free(ptr);
+//}
+//
+//void* operator new[](size_t size)
+//{
+//	cout << "new[] " << size << endl;
+//	void* ptr = ::malloc(size);
+//	return ptr;
+//}
+//
+//void operator delete[](void* ptr)
+//{
+//	cout << "delete " << endl;
+//	::free(ptr);
+//}
+//
+
+int main()
+{
+	Knight* kinght = xnew<Knight>();
+
+	xdelete<Knight>(kinght);
+
+	Knight* kinght2 = xnew<Knight>(10);
+
+	xdelete<Knight>(kinght2);
+>>>>>>> Stashed changes
 }
