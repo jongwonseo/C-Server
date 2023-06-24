@@ -31,7 +31,7 @@ protected:
    SharedPtr
 ----------------*/
 
-template<typename T>
+template <typename T>
 class TSharedPtr
 {
 public:

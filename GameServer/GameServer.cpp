@@ -29,6 +29,7 @@ public:
 		_target = target;
 		// 중간에 개입 가능
 		//target->AddRef();
+
 	}
 
 	bool Update()
