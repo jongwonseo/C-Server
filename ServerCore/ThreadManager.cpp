@@ -3,8 +3,13 @@
 #include "CoreTLS.h"
 #include "CoreGlobal.h"
 
+/*------------------
+	ThreadManager
+-------------------*/
+
 ThreadManager::ThreadManager()
 {
+	// Main Thread
 	InitTLS();
 }
 
@@ -16,7 +21,7 @@ ThreadManager::~ThreadManager()
 void ThreadManager::Launch(function<void(void)> callback)
 {
 	LockGuard guard(_lock);
-	
+
 	_threads.push_back(thread([=]()
 		{
 			InitTLS();
@@ -27,11 +32,11 @@ void ThreadManager::Launch(function<void(void)> callback)
 
 void ThreadManager::Join()
 {
-	for (thread& t : _threads) {
+	for (thread& t : _threads)
+	{
 		if (t.joinable())
 			t.join();
 	}
-
 	_threads.clear();
 }
 
@@ -43,5 +48,5 @@ void ThreadManager::InitTLS()
 
 void ThreadManager::DestroyTLS()
 {
-}
 
+}

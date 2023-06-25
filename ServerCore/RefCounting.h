@@ -31,7 +31,7 @@ protected:
    SharedPtr
 ----------------*/
 
-template <typename T>
+template<typename T>
 class TSharedPtr
 {
 public:
@@ -74,7 +74,6 @@ public:
 	bool		operator!=(const TSharedPtr& rhs) const { return _ptr != rhs._ptr; }
 	bool		operator!=(T* ptr) const { return _ptr != ptr; }
 	bool		operator<(const TSharedPtr& rhs) const { return _ptr < rhs._ptr; }
-	
 	T* operator*() { return _ptr; }
 	const T* operator*() const { return _ptr; }
 	operator T* () const { return _ptr; }

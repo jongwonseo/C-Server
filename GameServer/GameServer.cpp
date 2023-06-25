@@ -5,38 +5,24 @@
 #include "ThreadManager.h"
 #include "refCounting.h"
 #include "Memory.h"
+#include "ObjectPool.h"
 
-class Knight 
+//#include "LockFreeStack.h"
+
+
+DECLSPEC_ALIGN(16)
+class Data
 {
 public:
-	Knight() {
-		cout << "default" << endl;
-	}
-	Knight(int32 i) 
-	{
-		cout << "int" << endl;
-	}
-
-	~Knight()
-	{
-		cout << "~knight" << endl;
-	}
-
-	int _hp1 = 100;
-
+	SLIST_ENTRY _entry;
+	int64 _rand = rand() % 100;
 };
-class Person {};
-void* operator new(size_t size)
-{
-	cout << "new " << size << endl;
-	void* ptr = malloc(size);
-	return ptr;
-}
+
+SLIST_HEADER* GHeader;
+
+class Knight {};
 
 int main()
 {
-	Knight* knight = xnew<Knight>(100);
-	xdelete(knight);
-	knight->_hp1 = 10;
-
+	
 }

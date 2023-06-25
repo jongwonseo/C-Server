@@ -23,6 +23,9 @@
     <ClCompile Include="RefCounting.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="DeadLockProfiler.cpp" />
+    <ClCompile Include="Lock.cpp" />
+    <ClCompile Include="MemoryPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThreadManager.h" />
@@ -56,6 +59,9 @@
     <ClInclude Include="Container.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="DeadLockProfiler.h" />
+    <ClInclude Include="Lock.h" />
+    <ClInclude Include="MemoryPool.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
