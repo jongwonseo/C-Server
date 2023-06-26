@@ -8,6 +8,11 @@
 
 #pragma comment(lib, "ws2_32.lib")
 ///////////////////////////
+void HandleError(const char* cause)
+{
+	int32 errCode = ::WSAGetLastError();
+	cout << cause << " ErrorCode: " << errCode << endl;
+}
 
 int main()
 {
@@ -20,11 +25,10 @@ int main()
 	// type: TCP(SOCK_STREAM) vs UDP(SOCK_DGRAM)
 	// protocol : 0
 	// return : descriptor
-	SOCKET clientSocket = ::socket(AF_INET, SOCK_STREAM, 0);
+	SOCKET clientSocket = ::socket(AF_INET, SOCK_DGRAM, 0);
 	if (clientSocket == INVALID_SOCKET)
 	{
-		int32 errCode = ::WSAGetLastError();
-		cout << "Socket ErrorCode: " << errCode << endl;
+		HandleError("Socket");
 		return 0;
 	}
 
@@ -40,38 +44,47 @@ int main()
 	serverAddr.sin_port = ::htons(7777);
 	//host to network short
 
-	// Little-Endian(almost) vs Big-Endian
-	// ex) 0x12345678 4바이트 정수
-	// low [0x78][0x56][0x34][0x21] high : little
-	// low [0x12][0x34][0x56][0x78] high : big
+	// Connected UDP
+	::connect(clientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
 
-	if(::connect(clientSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr))==SOCKET_ERROR)
-	{
-		int32 errCode = ::WSAGetLastError();
-		cout << "Socket ErrorCode: " << errCode << endl;
-		return 0;
-	}
 
-	/////////////////////////////////////////////////
-	// 연결성공, 데이터 송수신 가능
-	
-	cout << "Connected to server";
 	while (true)
 	{
 		char sendBuffer[100] = "Hello World!";
 
-		for (int32 i = 0; i < 10; i++) {
-			int32 resultCode = ::send(clientSocket, sendBuffer, sizeof(sendBuffer), 0);
-
-			if (resultCode == SOCKET_ERROR)
-			{
-				int32 errCode = ::WSAGetLastError();
-				cout << "Socket ErrorCode: " << errCode << endl;
-				return 0;
-			}
+		
+		// connected UDP
+		int32 resultCode = ::send(clientSocket, sendBuffer, sizeof(sendBuffer), 0);
+		
+		// original UDP(unconnected UDP)
+		//int32 resultCode = ::sendto(clientSocket, sendBuffer, sizeof(sendBuffer), 0, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
+		
+		if (resultCode == SOCKET_ERROR)
+		{
+			HandleError("SandTo");
+			return 0;
 		}
+	
 		cout << "Send Data! Len = " << sizeof(sendBuffer) << endl;
 
+		char recvBuffer[1000];
+
+		SOCKADDR_IN recvAddr;
+		::memset(&recvAddr, 0, sizeof(recvAddr));
+		int32 addrLen = sizeof(recvAddr);
+
+		// connected UDP
+		int32 recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+
+
+		// original UDP(unconnected UDP)
+		//int32 recvLen = ::recvfrom(clientSocket, recvBuffer, sizeof(recvBuffer), 0,(SOCKADDR*)&recvAddr, &addrLen);
+		if (recvLen <= 0)
+		{
+			HandleError("RecvFrom");
+			return 0;
+		}
+		this_thread::sleep_for(1s);
 		//// 서버에서 데이터 받음
 		//char recvBuffer[100]; //넉넉하게 만들기
 

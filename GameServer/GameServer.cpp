@@ -12,6 +12,11 @@
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
+void HandleError(const char* cause)
+{
+	int32 errCode = ::WSAGetLastError();
+	cout << cause << " ErrorCode: " << errCode << endl;
+}
 int main()
 {
 	// 윈속 초기화 (ws2_32 라이브러리 초기화)
@@ -20,102 +25,55 @@ int main()
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 0;
 
-	// ad : Address Family (AF_INET = IPv4, AF_INET6 = IPv6)
-	// type : TCP(SOCK_STREAM) vs UDP(SOCK_DGRAM)
-	// protocol : 0
-	// return : descriptor
-	SOCKET listenSocket = ::socket(AF_INET, SOCK_STREAM, 0);
-	if (listenSocket == INVALID_SOCKET)
+	// UDP는 여러개의 accpet된 소캣(client_socket)이 필요하지 않고 1개의 소켓으로 모든것을 커버
+	SOCKET serverSocket = ::socket(AF_INET, SOCK_DGRAM, 0);
+	if (serverSocket == INVALID_SOCKET)
 	{
-		int32 errCode = ::WSAGetLastError();
-		cout << "Socket ErrorCode : " << errCode << endl;
+		HandleError("Socket");
 		return 0;
 	}
 
-	// 나의 주소는? (IP주소 + Port)->XX 아파트 YY 호
-	SOCKADDR_IN serverAddr; // IPv4
-	::memset(&serverAddr, 0, sizeof(serverAddr));
+	SOCKADDR_IN serverAddr;
+	::memset(&serverAddr, 0, sizeof(SOCKADDR_IN));
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.s_addr = ::htonl(INADDR_ANY); //< 니가 알아서 해줘
-	serverAddr.sin_port = ::htons(7777); // 80 : HTTP
+	serverAddr.sin_addr.s_addr = ::htonl(INADDR_ANY);
+	serverAddr.sin_port = ::htons(7777);
 
-	// 안내원 폰 개통! 식당의 대표 번호
-	if (::bind(listenSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+	if (::bind(serverSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
 	{
-		int32 errCode = ::WSAGetLastError();
-		cout << "Bind ErrorCode : " << errCode << endl;
+		HandleError("Bind");
 		return 0;
 	}
-
-	// 영업 시작!
-	if (::listen(listenSocket, 10) == SOCKET_ERROR)
-	{
-		int32 errCode = ::WSAGetLastError();
-		cout << "Listen ErrorCode : " << errCode << endl;
-		return 0;
-	}
-
-	// -----------------------------
 
 	while (true)
 	{
-		SOCKADDR_IN clientAddr; // IPv4
+		SOCKADDR_IN clientAddr;
 		::memset(&clientAddr, 0, sizeof(clientAddr));
 		int32 addrLen = sizeof(clientAddr);
-
-		SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
-		if (clientSocket == INVALID_SOCKET)
+		char recvBuffer[1000];
+		
+		int32 recvLen = ::recvfrom(serverSocket, recvBuffer, sizeof(recvBuffer), 0, (SOCKADDR*)&clientAddr, &addrLen);
+		
+		if (recvLen <= 0)
 		{
-			int32 errCode  = ::WSAGetLastError();
-			cout << "Accept ErrorCode : " << errCode << endl;
+			HandleError("RecvFrom");
 			return 0;
 		}
 
-		// 손님 입장!
-		char ipAddress[16];
-		::inet_ntop(AF_INET, &clientAddr.sin_addr, ipAddress, sizeof(ipAddress));
-		cout << "Client Connected! IP = " << ipAddress << endl;
-
-		while (true)
+		cout << "receive Data! Len " << recvLen << endl;
+		cout << "receive Data! " << recvBuffer << endl;
+	
+	
+		int32 errorCode = ::sendto(serverSocket, recvBuffer, recvLen,0,(SOCKADDR*)&clientAddr,sizeof(clientAddr));
+	
+		if (errorCode == SOCKET_ERROR)
 		{
-			char recvBuffer[1000]; //넉넉하게 만들기
-			
-			this_thread::sleep_for(1s);
-			// receive한 바이트 리턴
-			int32 recevLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
-
-			if (recevLen <= 0 )
-			{
-				int32 errCode = ::WSAGetLastError();
-				cout << "Socket ErrorCode: " << errCode << endl;
-				return 0;
-			}
-
-			for (auto i = 0; i < sizeof(recvBuffer); i++)
-				printf("%d %c\n", i, recvBuffer[i]);
-
-			cout << "receive Data! Len " << recevLen << endl;
-			cout << "receive Data! " << recvBuffer << endl;
-			char c;
-			cin >> c;
-
-			// client에게 그대로 보내주기
-			int32 resultCode = ::send(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
-
-			if (resultCode == SOCKET_ERROR)
-			{
-				int32 errCode = ::WSAGetLastError();
-				cout << "Socket ErrorCode: " << errCode << endl;
-				return 0;
-			}
-
-			cout << "Send Data! Len = " << sizeof(recvBuffer) << endl;
+			HandleError("SandTo");
+			return 0;
 		}
+
+		cout << "Send Data! Len = " << recvLen << endl;
 	}
-
-	// -----------------------------
-
-
 	// 윈속 종료
 	::WSACleanup();
 }
