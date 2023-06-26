@@ -66,7 +66,7 @@ int main()
 		SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
 		if (clientSocket == INVALID_SOCKET)
 		{
-			int32 errCode = ::WSAGetLastError();
+			int32 errCode  = ::WSAGetLastError();
 			cout << "Accept ErrorCode : " << errCode << endl;
 			return 0;
 		}
@@ -76,7 +76,36 @@ int main()
 		::inet_ntop(AF_INET, &clientAddr.sin_addr, ipAddress, sizeof(ipAddress));
 		cout << "Client Connected! IP = " << ipAddress << endl;
 
-		// TODO
+		while (true)
+		{
+			char recvBuffer[100]; //넉넉하게 만들기
+			
+			// receive한 바이트 리턴
+			int32 recevLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+
+			if (recevLen <= 0 )
+			{
+				int32 errCode = ::WSAGetLastError();
+				cout << "Socket ErrorCode: " << errCode << endl;
+				return 0;
+			}
+
+			cout << "receive Data! Len " << recevLen << endl;
+			cout << "receive Data! " << recvBuffer << endl;
+
+
+			// client에게 그대로 보내주기
+			int32 resultCode = ::send(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+
+			if (resultCode == SOCKET_ERROR)
+			{
+				int32 errCode = ::WSAGetLastError();
+				cout << "Socket ErrorCode: " << errCode << endl;
+				return 0;
+			}
+
+			cout << "Send Data! Len = " << sizeof(recvBuffer) << endl;
+		}
 	}
 
 	// -----------------------------
