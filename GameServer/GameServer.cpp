@@ -135,6 +135,82 @@ int main()
 		::setsockopt(serverSocket, IPPROTO_TCP, TCP_NODELAY, (char*)&enable, sizeof(enable));
 	}
 
+	SOCKET listenSocket = ::socket(AF_INET, SOCK_STREAM, 0);
+	if (listenSocket == INVALID_SOCKET)
+		return 0;
+
+	u_long on = 1;
+	if (::ioctlsocket(listenSocket, FIONBIO, &on) == INVALID_SOCKET)
+		return 0;
+
+	SOCKADDR_IN serverAddr;
+	::memset(&serverAddr, 0, sizeof(serverAddr));
+	serverAddr.sin_family = AF_INET;
+	serverAddr.sin_addr.s_addr = ::htonl(INADDR_ANY);
+	serverAddr.sin_port = ::htons(7777);
+
+	if (::bind(listenSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+		return 0;
+	
+	if (::listen(listenSocket, SOMAXCONN) == SOCKET_ERROR)
+		return 0;
+
+	cout << "Accept" << endl;
+
+	SOCKADDR_IN clientAddr;
+	int32 addrLen = sizeof(clientAddr);
+	
+	// Accept
+	while (true) {
+		SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
+		if (clientSocket == INVALID_SOCKET)
+		{
+			if (::WSAGetLastError() == WSAEWOULDBLOCK)
+				continue;
+			
+			// Error
+			break;
+		}
+
+		cout << "Client Connected" << endl;
+	
+		//Recv
+		while (true)
+		{
+			char recvBuffer[1000];
+			int32 recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+			if (recvLen == SOCKET_ERROR)
+			{
+				if (::WSAGetLastError() == WSAEWOULDBLOCK)
+					continue;
+
+				// Error
+				break;
+			}
+			else if (recvLen == 0)
+			{
+				// ¿¬°á²÷±è
+				break;
+			}
+
+			cout << "Recv Data Len = " << recvLen << endl;
+		
+			// Send
+			while (true)
+			{
+				if (::send(clientSocket, recvBuffer, recvLen, 0) == SOCKET_ERROR)
+				{
+					if (::WSAGetLastError() == WSAEWOULDBLOCK)
+						continue;
+
+					// Error
+					break;
+				}
+				cout << "Send Data ! Len = " << recvLen << endl;
+				break;
+			}
+		}
+	}
 	// À©¼Ó Á¾·á
 	::WSACleanup();
 }
