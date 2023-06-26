@@ -78,8 +78,9 @@ int main()
 
 		while (true)
 		{
-			char recvBuffer[100]; //넉넉하게 만들기
+			char recvBuffer[1000]; //넉넉하게 만들기
 			
+			this_thread::sleep_for(1s);
 			// receive한 바이트 리턴
 			int32 recevLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
 
@@ -90,9 +91,13 @@ int main()
 				return 0;
 			}
 
+			for (auto i = 0; i < sizeof(recvBuffer); i++)
+				printf("%d %c\n", i, recvBuffer[i]);
+
 			cout << "receive Data! Len " << recevLen << endl;
 			cout << "receive Data! " << recvBuffer << endl;
-
+			char c;
+			cin >> c;
 
 			// client에게 그대로 보내주기
 			int32 resultCode = ::send(clientSocket, recvBuffer, sizeof(recvBuffer), 0);

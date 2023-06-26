@@ -60,34 +60,35 @@ int main()
 	{
 		char sendBuffer[100] = "Hello World!";
 
-		int32 resultCode = ::send(clientSocket, sendBuffer, sizeof(sendBuffer),0);
-		
-		if (resultCode == SOCKET_ERROR)
-		{
-			int32 errCode = ::WSAGetLastError();
-			cout << "Socket ErrorCode: " << errCode << endl;
-			return 0;
-		}
+		for (int32 i = 0; i < 10; i++) {
+			int32 resultCode = ::send(clientSocket, sendBuffer, sizeof(sendBuffer), 0);
 
+			if (resultCode == SOCKET_ERROR)
+			{
+				int32 errCode = ::WSAGetLastError();
+				cout << "Socket ErrorCode: " << errCode << endl;
+				return 0;
+			}
+		}
 		cout << "Send Data! Len = " << sizeof(sendBuffer) << endl;
 
-		// 서버에서 데이터 받음
-		char recvBuffer[100]; //넉넉하게 만들기
+		//// 서버에서 데이터 받음
+		//char recvBuffer[100]; //넉넉하게 만들기
 
-		// receive한 바이트 리턴
-		int32 recevLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+		//// receive한 바이트 리턴
+		//int32 recevLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
 
-		if (recevLen <= 0)
-		{
-			int32 errCode = ::WSAGetLastError();
-			cout << "Socket ErrorCode: " << errCode << endl;
-			return 0;
-		}
+		//if (recevLen <= 0)
+		//{
+		//	int32 errCode = ::WSAGetLastError();
+		//	cout << "Socket ErrorCode: " << errCode << endl;
+		//	return 0;
+		//}
 
-		cout << "receive Data! Len " << recevLen << endl;
-		cout << "receive Data! " << recvBuffer << endl;
+		//cout << "receive Data! Len " << recevLen << endl;
+		//cout << "receive Data! " << recvBuffer << endl;
 
-		this_thread::sleep_for(1s);
+		//this_thread::sleep_for(1s);
 	}
 
 	//소켓 리소스 반환
