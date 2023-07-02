@@ -24,6 +24,7 @@ public:
 	void				Send(BYTE* buffer, int32 len);
 
 	void				Disconnect(const WCHAR* cause);
+	bool				Connect();
 	shared_ptr<Service> GetService() { return _service.lock(); }
 	void				SetService(shared_ptr<Service> service) { _service = service; }
 
@@ -42,11 +43,13 @@ private:
 
 private:
 	/* 전송 관련*/
-	void		RegisterConnect();
+	bool		RegisterConnect();
+	bool		RegisterDisconnect();
 	void		RegisterRecv();
 	void		RegisterSend(SendEvent* sendEvent);
 
 	void		ProcessConnect();
+	void		ProcessDisconnect();
 	void		ProcessRecv(int32 numOfBytes);
 	void		ProcessSend(SendEvent* seendEvent, int32 numOfBytes);
 
@@ -76,6 +79,9 @@ private:
 
 private:
 	/* IocpEvent 재사용*/
+	ConnectEvent		_connectEvent;
+	DisconnectEvent		_disconnectEvent;
+	
 	RecvEvent			_recvEvent;
 };
 
