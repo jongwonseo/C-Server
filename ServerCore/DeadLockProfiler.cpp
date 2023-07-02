@@ -25,10 +25,10 @@ void DeadLockProfiler::PushLock(const char* name)
 	}
 
 	// ��� �ִ� ���� �־��ٸ�
-	if (_lockStack.empty() == false)
+	if (LLockStack.empty() == false)
 	{
 		// ������ �߰ߵ��� ���� ���̽���� ����� ���� �ٽ� Ȯ���Ѵ�.
-		const int32 prevId = _lockStack.top();
+		const int32 prevId = LLockStack.top();
 		if (lockId != prevId)
 		{
 			set<int32>& history = _lockHistory[prevId];
@@ -40,21 +40,21 @@ void DeadLockProfiler::PushLock(const char* name)
 		}
 	}
 
-	_lockStack.push(lockId);
+	LLockStack.push(lockId);
 }
 
 void DeadLockProfiler::PopLock(const char* name)
 {
 	LockGuard guard(_lock);
 
-	if (_lockStack.empty())
+	if (LLockStack.empty())
 		CRASH("MULTIPLE_UNLOCK");
 
 	int32 lockId = _nameToId[name];
-	if (_lockStack.top() != lockId)
+	if (LLockStack.top() != lockId)
 		CRASH("INVALID_UNLOCK");
 
-	_lockStack.pop();
+	LLockStack.pop();
 }
 
 void DeadLockProfiler::CheckCycle()

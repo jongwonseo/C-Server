@@ -19,3 +19,4 @@ using namespace std;
 #include "ObjectPool.h"
 #include "Types.h"
 #include "Memory.h"
+#include "SendBuffer.h"
