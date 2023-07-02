@@ -11,7 +11,6 @@ Service::Service(ServiceType type, NetAddress address, IocpCoreRef core, Session
 
 Service::~Service()
 {
-
 }
 
 void Service::CloseService()
@@ -21,8 +20,9 @@ void Service::CloseService()
 SessionRef Service::CreateSession()
 {
 	SessionRef session = _sessionFactory();
+	session->SetService(shared_from_this());
 
-	if (_iocpCore->Register(session) == false)
+	if(_iocpCore->Register(session) == false)
 		return nullptr;
 
 	return session;
