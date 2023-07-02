@@ -3,7 +3,7 @@
 #include "Service.h"
 #include "Session.h"
 
-char sendBuffer[] = "Hello world";
+char sendBuffer[] = "Hello World";
 
 class ServerSession : public Session
 {
@@ -33,6 +33,7 @@ public:
 	{
 		cout << "OnSend Len = " << len << endl;
 	}
+
 	virtual void OnDisconnected() override
 	{
 		cout << "Disconnected" << endl;
@@ -47,7 +48,7 @@ int main()
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<ServerSession>, // TODO : SessionManager 등
-		100);
+		1);
 
 	ASSERT_CRASH(service->Start());
 

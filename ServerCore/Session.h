@@ -2,6 +2,7 @@
 #include "IocpCore.h"
 #include "IocpEvent.h"
 #include "NetAddress.h"
+#include "RecvBuffer.h"
 
 class Service;
 
@@ -15,6 +16,11 @@ class Session : public IocpObject
 	friend class Listener;
 	friend class IocpCore;
 	friend class Service;
+
+	enum
+	{
+		BUFFER_SIZE = 0x10000,
+	};
 
 public:
 	Session();
@@ -62,12 +68,6 @@ protected:
 	virtual void		OnSend(int32 len) {}
 	virtual void		OnDisconnected() {}
 
-public:
-	// TEMP
-	BYTE _recvBuffer[1000];
-	// char _sendBuffer[1000];
-	// int32 _sendLen = 0;
-
 private:
 	weak_ptr<Service>	_service;
 	SOCKET				_socket = INVALID_SOCKET;
@@ -77,6 +77,7 @@ private:
 private:
 	USE_LOCK;
 
+	RecvBuffer _recvBuffer;
 private:
 	/* IocpEvent 재사용*/
 	ConnectEvent		_connectEvent;
