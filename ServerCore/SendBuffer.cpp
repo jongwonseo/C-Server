@@ -1,4 +1,4 @@
-ï»¿#include "pch.h"
+#include "pch.h"
 #include "SendBuffer.h"
 
 /*----------------
@@ -68,11 +68,11 @@ SendBufferRef SendBufferManager::Open(uint32 size)
 	{
 		LSendBufferChunk = Pop(); // WRITE_LOCK
 		LSendBufferChunk->Reset();
-	}
+	}		
 
 	ASSERT_CRASH(LSendBufferChunk->IsOpen() == false);
 
-
+	// ´Ù ½èÀ¸¸é ¹ö¸®°í »õ°Å·Î ±³Ã¼
 	if (LSendBufferChunk->FreeSize() < size)
 	{
 		LSendBufferChunk = Pop(); // WRITE_LOCK

@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "IocpCore.h"
 #include "NetAddress.h"
 
@@ -16,17 +16,17 @@ public:
 	~Listener();
 
 public:
-	/* ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
+	/* ¿ÜºÎ¿¡¼­ »ç¿ë */
 	bool StartAccept(ServerServiceRef service);
 	void CloseSocket();
 
 public:
-	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+	/* ÀÎÅÍÆäÀÌ½º ±¸Çö */
 	virtual HANDLE GetHandle() override;
 	virtual void Dispatch(class IocpEvent* iocpEvent, int32 numOfBytes = 0) override;
 
 private:
-	/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+	/* ¼ö½Å °ü·Ã */
 	void RegisterAccept(AcceptEvent* acceptEvent);
 	void ProcessAccept(AcceptEvent* acceptEvent);
 

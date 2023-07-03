@@ -1,4 +1,4 @@
-ï»¿#include "pch.h"
+#include "pch.h"
 #include "Listener.h"
 #include "SocketUtils.h"
 #include "IocpEvent.h"
@@ -77,7 +77,7 @@ void Listener::Dispatch(IocpEvent* iocpEvent, int32 numOfBytes)
 
 void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 {
-	SessionRef session = _service->CreateSession();
+	SessionRef session = _service->CreateSession(); // Register IOCP
 
 	acceptEvent->Init();
 	acceptEvent->session = session;
@@ -88,7 +88,7 @@ void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 		const int32 errorCode = ::WSAGetLastError();
 		if (errorCode != WSA_IO_PENDING)
 		{
-			// ï¿½Ï´ï¿½ ï¿½Ù½ï¿½ Accept ï¿½É¾ï¿½ï¿½Ø´ï¿½
+			// ÀÏ´Ü ´Ù½Ã Accept °É¾îÁØ´Ù
 			RegisterAccept(acceptEvent);
 		}
 	}
@@ -114,7 +114,5 @@ void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 
 	session->SetNetAddress(NetAddress(sockAddress));
 	session->ProcessConnect();
-	
-
 	RegisterAccept(acceptEvent);
 }

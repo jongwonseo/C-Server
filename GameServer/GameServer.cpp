@@ -3,14 +3,14 @@
 #include "Service.h"
 #include "Session.h"
 #include "GameSession.h"
-
+#include "GameSessionManager.h"
 int main()
 {
 	ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<GameSession>, // TODO : SessionManager µî
-		100);
+		1000);
 
 	ASSERT_CRASH(service->Start());
 
@@ -24,6 +24,23 @@ int main()
 				}
 			});
 	}
+	char sendData[] = "Hello World";
 
+	while (true)
+	{
+		SendBufferRef sendBuffer = GSendBufferManager->Open(4096);
+		
+		BYTE* buffer = sendBuffer->Buffer();
+
+		((PacketHeader*)buffer)->size = (sizeof(sendData) + sizeof(PacketHeader));
+		((PacketHeader*)buffer)->id = 1;
+
+		::memcpy(&buffer[4], buffer, sizeof(sendData));
+		sendBuffer->Close(sizeof(sendData) + sizeof(PacketHeader));
+
+		GSessionManager.Broadcast(sendBuffer);
+
+		this_thread::sleep_for(250ms);
+	}
 	GThreadManager->Join();
 }

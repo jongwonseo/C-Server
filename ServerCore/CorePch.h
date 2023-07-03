@@ -10,13 +10,13 @@
 #include <iostream>
 using namespace std;
 
-#include <WinSock2.h>
+#include <winsock2.h>
 #include <mswsock.h>
-#include <WS2tcpip.h>
+#include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
 #include "Lock.h"
 #include "ObjectPool.h"
-#include "Types.h"
+#include "TypeCast.h"
 #include "Memory.h"
 #include "SendBuffer.h"

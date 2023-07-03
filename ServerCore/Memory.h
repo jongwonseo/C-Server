@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "Allocator.h"
 
 class MemoryPool;
@@ -11,7 +11,7 @@ class Memory
 {
 	enum
 	{
-		// ~1024ï¿½ï¿½ï¿½ï¿½ 32ï¿½ï¿½ï¿½ï¿½, ~2048ï¿½ï¿½ï¿½ï¿½ 128ï¿½ï¿½ï¿½ï¿½, ~4096ï¿½ï¿½ï¿½ï¿½ 256ï¿½ï¿½ï¿½ï¿½
+		// ~1024±îÁö 32´ÜÀ§, ~2048±îÁö 128´ÜÀ§, ~4096±îÁö 256´ÜÀ§
 		POOL_COUNT = (1024 / 32) + (1024 / 128) + (2048 / 256),
 		MAX_ALLOC_SIZE = 4096
 	};
@@ -20,14 +20,14 @@ public:
 	Memory();
 	~Memory();
 
-	void* Allocate(int32 size);
+	void*	Allocate(int32 size);
 	void	Release(void* ptr);
 
 private:
 	vector<MemoryPool*> _pools;
 
-	// ï¿½Þ¸ï¿½ Å©ï¿½ï¿½ <-> ï¿½Þ¸ï¿½ Ç®
-	// O(1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
+	// ¸Þ¸ð¸® Å©±â <-> ¸Þ¸ð¸® Ç®
+	// O(1) ºü¸£°Ô Ã£±â À§ÇÑ Å×ÀÌºí
 	MemoryPool* _poolTable[MAX_ALLOC_SIZE + 1];
 };
 

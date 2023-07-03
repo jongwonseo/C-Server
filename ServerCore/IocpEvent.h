@@ -21,12 +21,11 @@ class IocpEvent : public OVERLAPPED
 public:
 	IocpEvent(EventType type);
 
-	void		Init();
-	EventType	GetType() { return eventType; }
+	void			Init();
 
 public:
-	EventType	eventType;
-	IocpObjectRef owner;
+	EventType		eventType;
+	IocpObjectRef	owner;
 };
 
 /*----------------
@@ -39,9 +38,9 @@ public:
 	ConnectEvent() : IocpEvent(EventType::Connect) { }
 };
 
-/*----------------
+/*--------------------
 	DisconnectEvent
------------------*/
+----------------------*/
 
 class DisconnectEvent : public IocpEvent
 {
@@ -59,7 +58,7 @@ public:
 	AcceptEvent() : IocpEvent(EventType::Accept) { }
 
 public:
-	SessionRef session = nullptr;
+	SessionRef	session = nullptr;
 };
 
 /*----------------
@@ -80,6 +79,6 @@ class SendEvent : public IocpEvent
 {
 public:
 	SendEvent() : IocpEvent(EventType::Send) { }
-
+	 
 	Vector<SendBufferRef> sendBuffers;
 };

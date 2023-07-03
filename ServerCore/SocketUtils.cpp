@@ -1,4 +1,4 @@
-ï»¿#include "pch.h"
+#include "pch.h"
 #include "SocketUtils.h"
 
 /*----------------
@@ -12,9 +12,9 @@ LPFN_ACCEPTEX		SocketUtils::AcceptEx = nullptr;
 void SocketUtils::Init()
 {
 	WSADATA wsaData;
-	ASSERT_CRASH(::WSAStartup(MAKEWORD(2, 2), OUT & wsaData) == 0);
-
-	/* ï¿½ï¿½Å¸ï¿½Ó¿ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ API */
+	ASSERT_CRASH(::WSAStartup(MAKEWORD(2, 2), OUT &wsaData) == 0);
+	
+	/* ·±Å¸ÀÓ¿¡ ÁÖ¼Ò ¾ò¾î¿À´Â API */
 	SOCKET dummySocket = CreateSocket();
 	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_CONNECTEX, reinterpret_cast<LPVOID*>(&ConnectEx)));
 	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_DISCONNECTEX, reinterpret_cast<LPVOID*>(&DisconnectEx)));
@@ -66,7 +66,7 @@ bool SocketUtils::SetTcpNoDelay(SOCKET socket, bool flag)
 	return SetSockOpt(socket, SOL_SOCKET, TCP_NODELAY, flag);
 }
 
-// ListenSocketï¿½ï¿½ Æ¯ï¿½ï¿½ï¿½ï¿½ ClientSocketï¿½ï¿½ ï¿½×´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// ListenSocketÀÇ Æ¯¼ºÀ» ClientSocket¿¡ ±×´ë·Î Àû¿ë
 bool SocketUtils::SetUpdateAcceptSocket(SOCKET socket, SOCKET listenSocket)
 {
 	return SetSockOpt(socket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, listenSocket);

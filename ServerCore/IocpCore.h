@@ -29,4 +29,3 @@ public:
 private:
 	HANDLE		_iocpHandle;
 };
-

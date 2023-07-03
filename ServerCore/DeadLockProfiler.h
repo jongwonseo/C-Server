@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include <stack>
 #include <map>
 #include <vector>
@@ -25,9 +25,9 @@ private:
 	Mutex _lock;
 
 private:
-	vector<int32>	_discoveredOrder; // ï¿½ï¿½å°¡ ï¿½ß°ßµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½è¿­
-	int32			_discoveredCount = 0; // ï¿½ï¿½å°¡ ï¿½ß°ßµï¿½ ï¿½ï¿½ï¿½ï¿½
-	vector<bool>	_finished; // Dfs(i)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	vector<int32>	_discoveredOrder; // ³ëµå°¡ ¹ß°ßµÈ ¼ø¼­¸¦ ±â·ÏÇÏ´Â ¹è¿­
+	int32			_discoveredCount = 0; // ³ëµå°¡ ¹ß°ßµÈ ¼ø¼­
+	vector<bool>	_finished; // Dfs(i)°¡ Á¾·á µÇ¾ú´ÂÁö ¿©ºÎ
 	vector<int32>	_parent;
 };
 

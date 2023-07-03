@@ -1,8 +1,13 @@
 #pragma once
 
+/*--------------
+	RecvBuffer
+----------------*/
+
 class RecvBuffer
 {
-	enum {BUFFER_COUNT=10};
+	enum { BUFFER_COUNT = 10 };
+
 public:
 	RecvBuffer(int32 bufferSize);
 	~RecvBuffer();
@@ -22,5 +27,5 @@ private:
 	int32			_readPos = 0;
 	int32			_writePos = 0;
 	Vector<BYTE>	_buffer;
-
 };
+

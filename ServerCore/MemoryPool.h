@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 enum
 {
@@ -28,7 +28,7 @@ struct MemoryHeader : public SLIST_ENTRY
 	}
 
 	int32 allocSize;
-	// TODO : ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// TODO : ÇÊ¿äÇÑ Ãß°¡ Á¤º¸
 };
 
 /*-----------------
@@ -43,7 +43,7 @@ public:
 	~MemoryPool();
 
 	void			Push(MemoryHeader* ptr);
-	MemoryHeader* Pop();
+	MemoryHeader*	Pop();
 
 private:
 	SLIST_HEADER	_header;
