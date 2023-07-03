@@ -2,7 +2,7 @@
 
 class GameSession;
 
-using GameSessionRef = shared_ptr< GameSession>;
+using GameSessionRef = shared_ptr<GameSession>;
 
 class GameSessionManager
 {
@@ -14,9 +14,6 @@ public:
 private:
 	USE_LOCK;
 	Set<GameSessionRef> _sessions;
-
 };
 
 extern GameSessionManager GSessionManager;
-
-

@@ -4,7 +4,6 @@
 
 GameSessionManager GSessionManager;
 
-
 void GameSessionManager::Add(GameSessionRef session)
 {
 	WRITE_LOCK;

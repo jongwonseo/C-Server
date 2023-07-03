@@ -15,10 +15,22 @@
     <ClCompile Include="pch.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\ServerCore\GameSessionManager.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ServerCore\GameSession.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerCore\GameSessionManager.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerCore\GameSession.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

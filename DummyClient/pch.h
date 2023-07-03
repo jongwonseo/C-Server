@@ -6,7 +6,7 @@
 #pragma comment(lib, "Debug\\ServerCore.lib")
 
 #else
-#pragma comment(lib, "Release\ServerCore.lib")
+#pragma comment(lib, "Release\\ServerCore.lib")
 
 #endif
 
