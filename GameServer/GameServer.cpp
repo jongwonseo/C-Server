@@ -7,8 +7,24 @@
 #include "BufferWriter.h"
 #include "ServerPacketHandler.h"
 
+// 컴퓨터는 8바이트 주소로 접근을 해야 빠름
+#pragma pack(1) //os야 1바이트씩 확인해라
+struct PKT_S_TEST
+{
+	uint32 hp; //8 빈공간은 더미
+	uint64 id; //8
+	uint16 attack; //8
+
+};
+#pragma pack()
+
 int main()
 {
+	PKT_S_TEST pkt;
+	pkt.hp = 1;
+	pkt.id = 2;
+	pkt.attack = 3;
+
 	ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
